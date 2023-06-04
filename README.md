@@ -14,7 +14,7 @@ This app is links vault. The place to store your links. You can easily add them 
 
 ### Frontend
 
-- Qwick
+- Qwik
 
 ### Backend
 
