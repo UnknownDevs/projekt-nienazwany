@@ -18,4 +18,4 @@ This app is links vault. The place to store your links. You can easily add them 
 
 ### Backend
 
-- C#
+- ASP.NET Web API (Minimal API, .Net Core 7)
