@@ -1,0 +1,19 @@
+{
+  "name": "projekt-nienazwany",
+  "version": "1.0.0",
+  "description": "The main goal of this project is to lift our skills to the next level!",
+  "scripts": {
+    "build:server": "cd backend && dotnet build",
+    "start:server": "cd backend && dotnet run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UnknownDevs/projekt-nienazwany.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/UnknownDevs/projekt-nienazwany/issues"
+  },
+  "homepage": "https://github.com/UnknownDevs/projekt-nienazwany#readme"
+}
