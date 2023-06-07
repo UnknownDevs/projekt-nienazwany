@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "The main goal of this project is to lift our skills to the next level!",
   "scripts": {
-    "build:server": "cd backend && dotnet build",
-    "start:server": "cd backend && dotnet run"
+    "build:server": "dotnet build ./backend/src/Backend.csproj",
+    "start:server": "dotnet run --project ./backend/src/Backend.csproj"
   },
   "repository": {
     "type": "git",
