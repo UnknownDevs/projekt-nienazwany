@@ -1,8 +1,21 @@
+using Swashbuckle.AspNetCore.Annotations;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(x =>
+{
+    x.EnableAnnotations();
+});
 
-var app = builder.Build();
+var app = builder.Build(); 
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 // Configure the HTTP request pipeline.
 
@@ -13,7 +26,10 @@ var summaries = new[]
     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
 };
 
-app.MapGet("/weatherforecast", () =>
+var test = app.MapGroup("/test"); // example of mapGroup
+
+//this example present how we can add swagger attributes using the `.WithMetadata()` method
+test.MapGet("/weatherforecast", () =>
 {
     var forecast = Enumerable.Range(1, 5).Select(index =>
         new WeatherForecast
@@ -24,6 +40,11 @@ app.MapGet("/weatherforecast", () =>
         ))
         .ToArray();
     return forecast;
+}).WithMetadata(new SwaggerOperationAttribute("summary001", "description001"));
+
+//this example present how we can add swagger attributes using decorators
+test.MapGet("/ping", [SwaggerOperation(Summary = "summary attribute", Description = "description attribute")] () => { 
+    return "pong";
 });
 
 app.Run();
