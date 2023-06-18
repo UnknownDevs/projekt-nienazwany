@@ -5,7 +5,6 @@ public class CreateBookmarkRequest
 {
 
     public string? Link { get; set; }
-    public long UserId { get; set; }
     public string? ImgUrl { get; set; }
 };
 
