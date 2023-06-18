@@ -1,4 +1,8 @@
+using Backend.Contracts;
+using Backend.Model;
+using Supabase;
 using Swashbuckle.AspNetCore.Annotations;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,13 +13,20 @@ builder.Services.AddSwaggerGen(x =>
     x.EnableAnnotations();
 });
 
+builder.Services.AddScoped<Supabase.Client>(_ =>
+    new Supabase.Client(builder.Configuration["SUPABASE_URL"], builder.Configuration["SUPABASE_KEY"], new SupabaseOptions{
+        AutoRefreshToken = true,
+        AutoConnectRealtime = true
+    }));
+
+
 var app = builder.Build(); 
 
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+};
 
 // Configure the HTTP request pipeline.
 
@@ -45,6 +56,50 @@ test.MapGet("/weatherforecast", () =>
 //this example present how we can add swagger attributes using decorators
 test.MapGet("/ping", [SwaggerOperation(Summary = "summary attribute", Description = "description attribute")] () => { 
     return "pong";
+});
+
+app.MapPost("/bookmark", async (CreateBookmarkRequest request, Supabase.Client client) =>
+{
+    var bookmark = new Bookmark
+    {
+        UserId = request.UserId,
+        Link = request.Link,
+        ImgUrl = request.ImgUrl
+    };
+
+    var response = await client.From<Bookmark>().Insert(bookmark);
+
+    var newBookmark = response.Models.First();
+    return Results.Ok(newBookmark.Id);
+
+});
+
+app.MapGet("/bookmark/{id}", async (long id, Supabase.Client client) =>
+{
+    var response = await client.From<Bookmark>().Where(n => n.Id == id).Get();
+
+    var bookmark = response.Models.FirstOrDefault();
+
+    if (bookmark is null)
+    {
+        return Results.NotFound();
+    };
+
+    var bookmarkResponse = new BookmarkResponse
+    {
+        Id = bookmark.Id,
+        Link = bookmark.Link,
+        CreatedAt = bookmark.CreatedAt,
+        ImgUrl = bookmark.ImgUrl,
+        UserId = bookmark.UserId
+    };
+    return Results.Ok(bookmarkResponse);
+});
+
+app.MapDelete("/bookmark/{id}", async (long id, Supabase.Client client) =>
+{
+    await client.From<Bookmark>().Where(n => n.Id == id).Delete();
+    return Results.NoContent();
 });
 
 app.Run();
