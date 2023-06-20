@@ -47,7 +47,7 @@ app.MapPost("/bookmark", async (CreateBookmarkRequest request, Supabase.Client c
 
 });
 
-app.MapGet("/bookmark/{id}", async (long id, Supabase.Client client) =>
+app.MapGet("/bookmark/{id}", async (string id, Supabase.Client client) =>
 {
     var response = await client.From<Bookmark>().Where(n => n.Id == id).Get();
 
@@ -69,7 +69,7 @@ app.MapGet("/bookmark/{id}", async (long id, Supabase.Client client) =>
     return Results.Ok(bookmarkResponse);
 });
 
-app.MapDelete("/bookmark/{id}", async (long id, Supabase.Client client) =>
+app.MapDelete("/bookmark/{id}", async (string id, Supabase.Client client) =>
 {
     await client.From<Bookmark>().Where(n => n.Id == id).Delete();
     return Results.NoContent();
