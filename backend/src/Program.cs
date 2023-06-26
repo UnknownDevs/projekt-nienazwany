@@ -16,13 +16,21 @@ builder.Services.AddSwaggerGen(x =>
 var  supabaseUrl = Environment.GetEnvironmentVariable("SUPABASE_URL");
 var  supabaseKey = Environment.GetEnvironmentVariable("SUPABASE_KEY");
 
+Console.WriteLine("Get env variables");
+
+Console.WriteLine(supabaseUrl);
+Console.WriteLine(supabaseKey);
+System.Diagnostics.Debug.WriteLine("Get env variables");
+
+System.Diagnostics.Debug.WriteLine(supabaseUrl);
+System.Diagnostics.Debug.WriteLine(supabaseKey);
 
 builder.Services.AddScoped<Supabase.Client>(_ =>
-    new Supabase.Client(supabaseUrl, supabaseKey, new SupabaseOptions{
+    new Supabase.Client(supabaseUrl, supabaseKey, new SupabaseOptions
+    {
         AutoRefreshToken = true,
         AutoConnectRealtime = true
     }));
-
 
 var app = builder.Build(); 
 
